@@ -1,4 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## About
+Easy Money Management is a web application that helps you manage your income and expenses with data tables and charts. A new feature allows you to calculate your savings with interest rates and predict your total value in the next five years. This can help you plan for the future and have a better understanding of your savings.
 
 ## Getting Started
 
