@@ -5,8 +5,8 @@ import {Dropdown} from 'antd'
 import {TiArrowSortedDown} from "react-icons/ti";
 
 import Avatar from '/public/images/avatar.jpg'
-import TH from '/public/images/language/TH.png'
-import ENG from '/public/images/language/US.png'
+import TH from '/public/images/language/th.png'
+import ENG from '/public/images/language/us.png'
 
 const Navbar = () => {
     return (
