@@ -88,7 +88,7 @@ const SavingsTable = () => {
             title: 'Total Interest',
             value: 5556.22,
             rate: 2.75,
-            rateColor: 'text-[#FAB121]'
+            rateColor: 'text-[#C8C8C8]'
         }
     ]
 

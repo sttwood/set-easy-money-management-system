@@ -1,26 +1,27 @@
 import React, {useEffect, useState} from 'react'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 
 import {Button, Divider, Input, Select, Table, Tag} from 'antd'
-import {ColumnsType} from 'antd/es/table';
-import {TbFileExport, TbFileTypeXls, TbFileTypePdf} from "react-icons/tb";
-import {HiMiniMagnifyingGlass} from "react-icons/hi2";
+import {ColumnsType} from 'antd/es/table'
+import {TbFileExport, TbFileTypeXls, TbFileTypePdf} from "react-icons/tb"
+import {HiMiniMagnifyingGlass} from "react-icons/hi2"
 
-import {Income} from '@/apis/types/financial';
+import {IncomeExpense} from '@/apis/types/financial'
 import SectionHeader from '@/components/SectionHeader'
 
 interface SelectOption {
-    value: string;
-    label: string;
+    value: string
+    label: string
 }
 
 const IncomeExpenseTabele = () => {
     const [uniqueOptions, setUniqueOptions] = useState<SelectOption[]>([])
+    const [selectedRowKeys, setSelectedRowKeys] = useState()
 
     // Filter
     const [selectDate, setSelectDate] = useState<string>('')
     const [searchData, setSearchData] = useState<string>('')
-    const [filteredData, setFilteredData] = useState<Income[]>([])
+    const [filteredData, setFilteredData] = useState<IncomeExpense[]>([])
 
     const mockData = [
         {
@@ -78,7 +79,7 @@ const IncomeExpenseTabele = () => {
             title: 'Date',
             dataIndex: 'createdAt',
             defaultSortOrder: 'descend',
-            sorter: (a: Income, b: Income) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+            sorter: (a: IncomeExpense, b: IncomeExpense) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
             render: (text: string) => (
                 <p className='m-0 text-[12px] text-[#252525]'>
                     {dayjs(text).format('DD/MM/YYYY')}
@@ -117,8 +118,8 @@ const IncomeExpenseTabele = () => {
                     value: 'expense',
                 }
             ],
-            onFilter: (value: any, record: Income) => record.type === value,
-            render: (text: string, record: Income) => {
+            onFilter: (value: any, record: IncomeExpense) => record.type === value,
+            render: (text: string, record: IncomeExpense) => {
                 const displayText = text.charAt(0).toUpperCase() + text.slice(1)
 
                 return (
@@ -133,28 +134,28 @@ const IncomeExpenseTabele = () => {
                 )
             },
         },
-    ];
+    ]
 
     // Assign options
     useEffect(() => {
         // Extract unique options from the mockData
-        const uniqueDatesSet = new Set<string>();
+        const uniqueDatesSet = new Set<string>()
 
         const sortedData = mockData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
         sortedData.forEach((item) => {
-            const formattedDate = dayjs(item.createdAt).format('MM/YYYY');
-            uniqueDatesSet.add(formattedDate);
-        });
+            const formattedDate = dayjs(item.createdAt).format('MM/YYYY')
+            uniqueDatesSet.add(formattedDate)
+        })
 
         // Convert set to array of objects with label and value properties
         const uniqueOptionsArray = Array.from(uniqueDatesSet).map((date) => ({
             label: date,
             value: date,
-        }));
+        }))
 
         // Update state with unique options
-        setUniqueOptions(uniqueOptionsArray);
+        setUniqueOptions(uniqueOptionsArray)
         if (!selectDate) {
             setFilteredData(mockData)
         }
@@ -166,9 +167,9 @@ const IncomeExpenseTabele = () => {
             setFilteredData(mockData)
         } else {
             const filteredData = mockData.filter((item) => {
-                const formattedDate = dayjs(item.createdAt).format('MM/YYYY');
-                return formattedDate === selectDate;
-            });
+                const formattedDate = dayjs(item.createdAt).format('MM/YYYY')
+                return formattedDate === selectDate
+            })
             setFilteredData(filteredData)
         }
     }, [selectDate])
@@ -179,14 +180,14 @@ const IncomeExpenseTabele = () => {
             setFilteredData(mockData)
         } else {
             const filteredData = mockData.filter((item) => {
-                const lowerCaseSearch = searchData.toLowerCase();
+                const lowerCaseSearch = searchData.toLowerCase()
 
-                const noteMatch = item.note.toLowerCase().includes(lowerCaseSearch);
-                const priceMatch = item.price.toString().includes(lowerCaseSearch);
-                const categoryMatch = item.category.toLowerCase().includes(lowerCaseSearch);
+                const noteMatch = item.note.toLowerCase().includes(lowerCaseSearch)
+                const priceMatch = item.price.toString().includes(lowerCaseSearch)
+                const categoryMatch = item.category.toLowerCase().includes(lowerCaseSearch)
 
-                return noteMatch || priceMatch || categoryMatch;
-            });
+                return noteMatch || priceMatch || categoryMatch
+            })
             setFilteredData(filteredData)
         }
     }, [searchData])
@@ -219,7 +220,11 @@ const IncomeExpenseTabele = () => {
                 <Table
                     columns={columns}
                     dataSource={filteredData}
-                    pagination={{pageSize: 6}}
+                    pagination={{
+                        defaultPageSize: 5,
+                        showSizeChanger: true,
+                        pageSizeOptions: [5, 10, 20],
+                    }}
                 />
             </div>
         </section>

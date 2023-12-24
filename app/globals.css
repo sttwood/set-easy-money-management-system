@@ -10,3 +10,19 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* Custom Ant label require */
+.ant-form-item-required::before {
+  display: none !important;
+}
+.ant-form-item-required p::after {
+  display: inline-block;
+  margin-inline-start: 4px;
+  margin-top: 2px;
+  position: absolute;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: "*";
+}

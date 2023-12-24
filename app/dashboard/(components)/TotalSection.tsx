@@ -24,7 +24,7 @@ function TotalSection() {
                         <p className='m-0 text-base text-[#404040] font-semibold'>
                             Total Income
                         </p>
-                        <p className='m-0 text-[24px] text-[#59CA47] font-semibold'>
+                        <p className='m-0 text-[24px] text-[#252525] font-semibold'>
                             ฿ 20,000.00
                         </p>
                         <p className='m-0 text-[12px] text-[#C8C8C8] font-semibold'>
@@ -47,7 +47,7 @@ function TotalSection() {
                         <p className='m-0 text-base text-[#404040] font-semibold'>
                             Total Expense
                         </p>
-                        <p className='m-0 text-[24px] text-[#FF7474] font-semibold'>
+                        <p className='m-0 text-[24px] text-[#252525] font-semibold'>
                             ฿ 15,000.00
                         </p>
                         <p className='m-0 text-[12px] text-[#C8C8C8] font-semibold'>
@@ -70,7 +70,7 @@ function TotalSection() {
                         <p className='m-0 text-base text-[#404040] font-semibold'>
                             Total Remaining
                         </p>
-                        <p className='m-0 text-[24px] text-[#FAB121] font-semibold'>
+                        <p className='m-0 text-[24px] text-[#252525] font-semibold'>
                             ฿ 5,000.00
                         </p>
                         <p className='m-0 text-[12px] text-[#C8C8C8] font-semibold'>
