@@ -1,6 +1,6 @@
 "use client"
 import React, {useEffect, useState} from 'react'
-import {Button, Select, Space} from 'antd'
+import {Button, Form, Input, Modal, Select, Space} from 'antd'
 import {BsClipboard2Data} from "react-icons/bs"
 import {motion, useAnimation} from 'framer-motion'
 import {useMenubarData} from '@/context/MenubarContext'
@@ -13,12 +13,25 @@ interface SelectOption {
     label: string
 }
 
+export type FieldType = {
+    note: string
+    price: number
+    createdAt: Date
+    type: string
+    category: string
+}
+
 const IncomeAndExpenese = () => {
+    const [form] = Form.useForm()
     const controls = useAnimation()
     const {collapsed} = useMenubarData()
     const [selectDate, setSelectDate] = useState<string>('')
     const [filteredData, setFilteredData] = useState<IncomeExpense[]>([])
     const [uniqueOptions, setUniqueOptions] = useState<SelectOption[]>([])
+    const [loading, setLoading] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [actionType, setActionType] = useState('')
+    const [editItem, setEditItem] = useState<IncomeExpense | null>(null)
 
     // Assign options
     useEffect(() => {
@@ -48,6 +61,44 @@ const IncomeAndExpenese = () => {
     useEffect(() => {
         controls.start({paddingLeft: collapsed ? 164 : 0});
     }, [collapsed])
+
+    const handleEdit = (item: IncomeExpense) => {
+        setEditItem(item)
+        setActionType('edit')
+        setIsModalOpen(true)
+        form.setFieldsValue({
+            note: item.note,
+            price: item.price,
+            type: item.type,
+            category: item.category
+        })
+    }
+
+    const handleOk = () => {
+        console.log('ok')
+        setLoading(true)
+        form.setFieldsValue({
+            note: null,
+            price: null,
+            type: null,
+            category: null
+        })
+        setTimeout(() => {
+            setLoading(false)
+            setIsModalOpen(false)
+        }, 3000)
+    }
+
+    const handleCancel = () => {
+        console.log('cancel')
+        setIsModalOpen(false)
+        form.setFieldsValue({
+            note: null,
+            price: null,
+            type: null,
+            category: null
+        })
+    }
 
     const mockData = [
         {
@@ -119,12 +170,12 @@ const IncomeAndExpenese = () => {
                 </h2>
                 <div className='flex flex-col gap-6 items-end'>
                     <Space size="large">
-                        <Button className='bg-[#5388D8] hover:bg-[#4079cf] text-white border-0 px-5'>
-                            <p className='hover:text-[#ebebeb] text-white ,-0'>+ New List</p>
+                        <Button className='bg-[#5388D8] hover:bg-[#4079cf] text-white border-0 px-[80px] h-[50px]' onClick={() => {
+                            setIsModalOpen(true)
+                            setActionType('add')
+                        }}>
+                            <p className='hover:text-[#ebebeb] text-white text-base'>+ New List</p>
 
-                        </Button>
-                        <Button className='p-[6px] hover:text-[#4096ff]'>
-                            <BsClipboard2Data size={16} className='text-[#404040] hover:text-[#4096ff]' />
                         </Button>
                     </Space>
                     <Select
@@ -140,12 +191,92 @@ const IncomeAndExpenese = () => {
                 <CardSection
                     title='Income'
                     data={filterIncomeData}
+                    setActionType={setActionType}
+                    setIsModalOpen={setIsModalOpen}
+                    handleEdit={handleEdit}
                 />
                 <CardSection
                     title='Expense'
                     data={filterExpenseData}
+                    setActionType={setActionType}
+                    setIsModalOpen={setIsModalOpen}
+                    handleEdit={handleEdit}
                 />
             </div>
+
+            <Modal
+                width={500}
+                open={isModalOpen}
+                title={<p className='text-[#39434F] text-[24px] font-semibold text-center pt-6'>{actionType === 'edit' ? 'Edit information' : 'Create New information'}</p>}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                footer={[
+                    <Button key="back" onClick={handleCancel}>
+                        Cancel
+                    </Button>,
+                    <Button
+                        key="submit"
+                        type="primary"
+                        loading={loading}
+                        onClick={handleOk}
+                        className='bg-[#456FF7] hover:bg-[#fccc3d]'
+                    >
+                        Submit
+                    </Button>,
+                ]}
+            >
+                <Form<FieldType>
+                    form={form}
+                    layout="vertical"
+                    name="form_in_modal"
+                    initialValues={{modifier: 'public'}}
+                    className='p-5 pb-6 flex flex-col gap-3'
+                >
+                    <Form.Item
+                        name="note"
+                        label={<p className='text-base text-[#242424] m-0'>Description</p>}
+                        className='m-0 w-full'
+                    >
+                        <Input placeholder="Enter your description" size="large" />
+                    </Form.Item>
+                    <Space>
+                        <Form.Item
+                            name="price"
+                            label={<p className='text-base text-[#242424] m-0'>Price</p>}
+                            rules={[{required: true, message: 'Please input the Price!'}]}
+                            className='m-0 w-full'
+                        >
+                            <Input placeholder="Enter your price" size="large" />
+                        </Form.Item>
+                        <Form.Item
+                            name="price"
+                            label={<p className='text-base text-[#242424] m-0'>Price</p>}
+                            rules={[{required: true, message: 'Please input the Price!'}]}
+                            className='m-0 w-full'
+                        >
+                            <Input placeholder="Enter your price" size="large" />
+                        </Form.Item>
+                    </Space>
+                    <Space>
+                        <Form.Item
+                            name="category"
+                            label={<p className='text-base text-[#242424] m-0'>Category Label</p>}
+                            rules={[{required: true, message: 'Please input the subTitle!'}]}
+                            className='m-0 w-full'
+                        >
+                            <Input placeholder="Enter your category" size="large" />
+                        </Form.Item>
+                        <Form.Item
+                            name="category"
+                            label={<p className='text-base text-[#242424] m-0'>Category Label</p>}
+                            rules={[{required: true, message: 'Please input the subTitle!'}]}
+                            className='m-0 w-full'
+                        >
+                            <Input placeholder="Enter your category" size="large" />
+                        </Form.Item>
+                    </Space>
+                </Form>
+            </Modal>
         </motion.div>
     )
 }

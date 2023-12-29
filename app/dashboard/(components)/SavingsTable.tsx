@@ -108,6 +108,7 @@ const SavingsTable = () => {
                 <Table
                     columns={columns}
                     dataSource={mockData}
+                    pagination={false}
                 />
             </div>
         </section>

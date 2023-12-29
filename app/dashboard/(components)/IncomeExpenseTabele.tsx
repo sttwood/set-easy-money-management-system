@@ -221,9 +221,8 @@ const IncomeExpenseTabele = () => {
                     columns={columns}
                     dataSource={filteredData}
                     pagination={{
-                        defaultPageSize: 5,
-                        showSizeChanger: true,
-                        pageSizeOptions: [5, 10, 20],
+                        defaultPageSize: 6,
+                        showSizeChanger: false,
                     }}
                 />
             </div>

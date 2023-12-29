@@ -10,7 +10,8 @@ export type IncomeExpense = {
 export type Savings = {
   key: React.Key
   createdAt: Date
-  note: string
-  price: number
-  type: string
+  deposit: number
+  present_value: number
+  interest: number
+  total_value: number
 }

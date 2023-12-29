@@ -1,7 +1,7 @@
 import React from 'react'
 
 type SectionHeaderProps = {
-  label: string
+  label?: string
   textStyle?: string
 }
 
